@@ -6,6 +6,15 @@ A interface segue o Hammer/WorldCraft; a configuração segue o TrenchBroom:
 jogos, definições de entidade, atalhos, cores e perfis de compilação ficam em
 arquivos de texto.
 
+## /!\ Advertência /!\
+
+Este código foi gerado pelo Claude Code (Opus 5.5) e é um teste de "vibe coding".
+Tudo (a não ser esta advertência) foi gerado pelo agente de IA sob minhas especi-
+ficações e meus pedidos de correção após testes. Devido a natureza nichada deste
+projeto, decidi primeiro testar com o programa sendo esboçado por IA. O uso deste
+software não recebe nenhuma garantia de minha parte e deve ser usado sob a noção
+de que é um programa gerado artificialmente.
+
 ## Compilar
 
 Dependências: compilador C99, `make`, Motif (libXm), Xt, X11 e OpenGL.
