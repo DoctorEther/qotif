@@ -1,0 +1,68 @@
+// Minimal Quake entity definitions for Qotif (extend or replace freely)
+
+@BaseClass = Appearflags [
+	spawnflags(Flags) = [
+		256 : "Not in Easy" : 0
+		512 : "Not in Normal" : 0
+		1024 : "Not in Hard" : 0
+		2048 : "Not in Deathmatch" : 0
+	]
+]
+@BaseClass = Targetname [ targetname(target_source) : "Name" ]
+@BaseClass = Target [ target(target_destination) : "Target" killtarget(target_destination) : "Killtarget" ]
+@BaseClass base(Appearflags) size(-16 -16 -24, 16 16 32) color(0 255 0) = PlayerClass [ angle(integer) : "Direction" : 0 ]
+
+@SolidClass = worldspawn : "World entity" [
+	message(string) : "Level name"
+	wad(string) : "Texture WADs"
+	worldtype(choices) : "Ambience" : 0 = [ 0 : "Medieval" 1 : "Metal" 2 : "Base" ]
+	sounds(integer) : "CD track" : 1
+]
+
+@PointClass base(PlayerClass) = info_player_start : "Player 1 start" []
+@PointClass base(PlayerClass) = info_player_deathmatch : "Deathmatch start" []
+@PointClass base(PlayerClass) = info_player_coop : "Coop start" []
+@PointClass base(Targetname) size(-4 -4 -4, 4 4 4) color(255 0 255) = info_null : "Target for spotlights" []
+@PointClass base(Targetname) size(-16 -16 -16, 16 16 16) color(255 128 0) = info_intermission : "Intermission camera" [ mangle(string) : "Pitch yaw roll" ]
+@PointClass base(Targetname) size(-8 -8 -8, 8 8 8) color(128 64 0) = path_corner : "Train path" [ target(target_destination) : "Next" wait(integer) : "Wait" : 0 ]
+
+@PointClass base(Targetname, Target) size(-8 -8 -8, 8 8 8) color(255 255 40) = light : "Light" [
+	light(integer) : "Brightness" : 300
+	style(choices) : "Style" : 0 = [ 0 : "Normal" 1 : "Flicker A" 2 : "Slow strong pulse" 10 : "Fluorescent flicker" ]
+	spawnflags(Flags) = [ 1 : "Initially dark" : 0 ]
+]
+@PointClass base(light) size(-10 -10 -40, 10 10 40) = light_torch_small_walltorch : "Wall torch" []
+@PointClass base(light) = light_flame_large_yellow : "Large flame" []
+@PointClass base(light) = light_fluoro : "Fluorescent light" []
+
+@PointClass base(Appearflags) size(-16 -16 0, 16 16 32) color(0 0 255) = item_health : "Health" [ spawnflags(Flags) = [ 1 : "Rotten" : 0 2 : "Megahealth" : 0 ] ]
+@PointClass base(Appearflags) size(-16 -16 0, 16 16 32) color(0 0 255) = item_armor1 : "Green armor" []
+@PointClass base(Appearflags) size(-16 -16 0, 16 16 32) color(0 0 255) = item_armor2 : "Yellow armor" []
+@PointClass base(Appearflags) size(-16 -16 0, 16 16 32) color(0 0 255) = item_shells : "Shells" []
+@PointClass base(Appearflags) size(-16 -16 0, 16 16 32) color(0 0 255) = item_spikes : "Nails" []
+@PointClass base(Appearflags) size(-16 -16 0, 16 16 32) color(0 0 255) = weapon_supershotgun : "Super shotgun" []
+@PointClass base(Appearflags) size(-16 -16 0, 16 16 32) color(0 0 255) = weapon_nailgun : "Nailgun" []
+@PointClass base(Appearflags) size(-16 -16 0, 16 16 32) color(0 0 255) = weapon_rocketlauncher : "Rocket launcher" []
+
+@PointClass base(Appearflags, Target, Targetname) size(-16 -16 -24, 16 16 40) color(220 0 0) = monster_army : "Grunt" [ angle(integer) : "Direction" : 0 spawnflags(Flags) = [ 1 : "Ambush" : 0 ] ]
+@PointClass base(Appearflags, Target, Targetname) size(-16 -16 -24, 16 16 40) color(220 0 0) = monster_dog : "Rottweiler" [ angle(integer) : "Direction" : 0 spawnflags(Flags) = [ 1 : "Ambush" : 0 ] ]
+@PointClass base(Appearflags, Target, Targetname) size(-16 -16 -24, 16 16 40) color(220 0 0) = monster_knight : "Knight" [ angle(integer) : "Direction" : 0 spawnflags(Flags) = [ 1 : "Ambush" : 0 ] ]
+
+@SolidClass base(Appearflags) color(0 128 204) = func_wall : "Wall" []
+@SolidClass base(Appearflags) color(0 128 204) = func_illusionary : "Non-solid wall" []
+@SolidClass base(Appearflags, Targetname, Target) color(0 128 204) = func_door : "Door" [
+	angle(integer) : "Move direction" : 0
+	speed(integer) : "Speed" : 100
+	wait(integer) : "Wait" : 3
+	lip(integer) : "Lip" : 8
+	spawnflags(Flags) = [ 1 : "Starts open" : 0 4 : "Don't link" : 0 8 : "Gold key" : 0 16 : "Silver key" : 0 32 : "Toggle" : 0 ]
+]
+@SolidClass base(Appearflags, Targetname, Target) color(0 128 204) = func_button : "Button" [ angle(integer) : "Direction" : 0 wait(integer) : "Wait" : 1 ]
+@SolidClass base(Appearflags, Targetname) color(0 128 204) = func_plat : "Elevator" [ height(integer) : "Travel height" ]
+@SolidClass base(Appearflags, Targetname) color(0 128 204) = func_train : "Train" [ target(target_destination) : "First stop" speed(integer) : "Speed" : 100 ]
+@SolidClass base(Appearflags, Targetname, Target) color(128 128 128) = trigger_once : "Trigger once" [ message(string) : "Message" ]
+@SolidClass base(Appearflags, Targetname, Target) color(128 128 128) = trigger_multiple : "Trigger multiple" [ wait(integer) : "Wait" : 0.2 message(string) : "Message" ]
+@SolidClass base(Appearflags, Targetname, Target) color(128 128 128) = trigger_teleport : "Teleporter" []
+@SolidClass base(Appearflags) color(128 128 128) = trigger_changelevel : "Change level" [ map(string) : "Next map" ]
+@SolidClass base(Appearflags) color(128 128 128) = trigger_secret : "Secret" [ message(string) : "Message" ]
+@PointClass base(Targetname) size(-8 -8 -8, 8 8 8) color(255 128 0) = info_teleport_destination : "Teleport destination" [ angle(integer) : "Direction" : 0 ]
