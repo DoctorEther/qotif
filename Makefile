@@ -39,10 +39,11 @@ CPPFLAGS_ALL = -D_XOPEN_SOURCE=700 -D_DEFAULT_SOURCE -D_BSD_SOURCE \
 LDFLAGS_ALL  = -Wl,-rpath,'$$ORIGIN/lib' $(LDFLAGS)
 LIBS_ALL     = $(LIBDIRS) -lXm -lXt -lX11 -lGL -lm $(LIBS)
 
-OBJS = src/actions.o src/brush.o src/common.o src/eclass.o src/editor.o \
-       src/game.o src/ini.o src/lexer.o src/main.o src/map.o src/mathlib.o \
-       src/render.o src/textures.o src/ui_dialogs.o src/ui_icons.o \
-       src/ui_main.o src/undo.o src/vfs.o src/view.o
+OBJDIR    ?= obj
+
+SRCS = actions brush common eclass editor game ini lexer main map mathlib \
+       render textures ui_dialogs ui_icons ui_main undo vfs view
+OBJS = $(SRCS:%=$(OBJDIR)/%.o)
 
 HDRS = src/actions.h src/brush.h src/common.h src/eclass.h src/editor.h \
        src/game.h src/ini.h src/lexer.h src/map.h src/mathlib.h src/render.h \
@@ -53,9 +54,11 @@ all: qotif
 qotif: $(OBJS)
 	$(CC) $(LDFLAGS_ALL) -o $@ $(OBJS) $(LIBS_ALL)
 
-.SUFFIXES: .c .o
-.c.o:
+$(OBJDIR)/%.o: src/%.c | $(OBJDIR)
 	$(CC) -std=c99 $(WARNFLAGS) $(CFLAGS) $(CPPFLAGS_ALL) -c $< -o $@
+
+$(OBJDIR):
+	mkdir -p $@
 
 $(OBJS): $(HDRS) Makefile
 
@@ -73,7 +76,7 @@ dist: qotif
 	@echo "portable bundle in $(DISTDIR)/ (run $(DISTDIR)/qotif)"
 
 clean:
-	rm -f qotif $(OBJS)
-	rm -rf $(DISTDIR)
+	rm -f qotif
+	rm -rf $(OBJDIR) $(DISTDIR)
 
 .PHONY: all run dist clean
