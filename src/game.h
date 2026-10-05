@@ -73,6 +73,7 @@ typedef struct prefs_s {
     int show_links;
     int show_console;
     int tex_linear;
+    int tex_mipmaps;
     int thumb_size;
     char font[256];
     float col_bg2d[3], col_bg3d[3];

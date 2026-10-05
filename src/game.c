@@ -406,6 +406,7 @@ void prefs_defaults(void)
     prefs.show_links = 1;
     prefs.show_console = 1;
     prefs.tex_linear = 0;
+    prefs.tex_mipmaps = 1;
     prefs.thumb_size = 128;
     str_copy(prefs.font, "-misc-fixed-medium-r-normal--13-*-*-*-*-*-iso8859-1", sizeof(prefs.font));
     /* Hammer-like palette: black 2D views, gray grid, white brushes, red selection */
@@ -469,6 +470,7 @@ void prefs_load(void)
     prefs.show_links = ini_get_bool(ini, "view", "show_links", prefs.show_links);
     prefs.show_console = ini_get_bool(ini, "view", "show_console", prefs.show_console);
     prefs.tex_linear = ini_get_bool(ini, "view", "texture_linear", prefs.tex_linear);
+    prefs.tex_mipmaps = ini_get_bool(ini, "view", "texture_mipmaps", prefs.tex_mipmaps);
     prefs.thumb_size = ini_get_int(ini, "view", "thumbnail_size", prefs.thumb_size);
     str_copy(prefs.font, ini_get(ini, "view", "font", prefs.font), sizeof(prefs.font));
     for (i = 0; i < num_pref_colors; i++) {
@@ -516,6 +518,7 @@ void prefs_save(void)
     ini_set_int(ini, "view", "show_links", prefs.show_links);
     ini_set_int(ini, "view", "show_console", prefs.show_console);
     ini_set_int(ini, "view", "texture_linear", prefs.tex_linear);
+    ini_set_int(ini, "view", "texture_mipmaps", prefs.tex_mipmaps);
     ini_set_int(ini, "view", "thumbnail_size", prefs.thumb_size);
     ini_set(ini, "view", "font", prefs.font);
     for (i = 0; i < num_pref_colors; i++) {

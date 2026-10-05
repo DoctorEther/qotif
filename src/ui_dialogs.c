@@ -1219,7 +1219,7 @@ enum { PAGE_GAMES, PAGE_VIEW, PAGE_COLORS, PAGE_KEYS, PAGE_COUNT };
 static struct {
     Widget dlg, pages[PAGE_COUNT];
     Widget game_list, game_path, game_mod, game_vars, game_info;
-    Widget fov, sens, fly, gmajor, undo, thumb, font, invert, linear, names, links;
+    Widget fov, sens, fly, gmajor, undo, thumb, font, invert, linear, mipmaps, names, links;
     Widget color_list, color_field;
     Widget key_list, key_field, key_info;
     int game_sel, color_sel, key_sel;
@@ -1484,6 +1484,7 @@ static void prefs_fill(void)
     ui_text_set(pr.font, prefs.font);
     XmToggleButtonSetState(pr.invert, prefs.invert_mouse ? True : False, False);
     XmToggleButtonSetState(pr.linear, prefs.tex_linear ? True : False, False);
+    XmToggleButtonSetState(pr.mipmaps, prefs.tex_mipmaps ? True : False, False);
     XmToggleButtonSetState(pr.names, prefs.show_names ? True : False, False);
     XmToggleButtonSetState(pr.links, prefs.show_links ? True : False, False);
 
@@ -1502,7 +1503,7 @@ static double field_double(Widget w, double def)
 static void prefs_apply(void)
 {
     char oldgame[64], oldpath[PATH_LEN], oldmod[128];
-    int oldlinear = prefs.tex_linear;
+    int oldlinear = prefs.tex_linear, oldmipmaps = prefs.tex_mipmaps;
 
     str_copy(oldgame, prefs.game, sizeof(oldgame));
     str_copy(oldpath, prefs_game_get(prefs.game, "path", ""), sizeof(oldpath));
@@ -1529,6 +1530,7 @@ static void prefs_apply(void)
     ui_text_get(pr.font, prefs.font, sizeof(prefs.font));
     prefs.invert_mouse = XmToggleButtonGetState(pr.invert);
     prefs.tex_linear = XmToggleButtonGetState(pr.linear);
+    prefs.tex_mipmaps = XmToggleButtonGetState(pr.mipmaps);
     prefs.show_names = XmToggleButtonGetState(pr.names);
     prefs.show_links = XmToggleButtonGetState(pr.links);
     tbw.tb.thumb = prefs.thumb_size;
@@ -1542,7 +1544,8 @@ static void prefs_apply(void)
         log_info("game set to %s", prefs.game);
         ed_load_resources();
         ui_map_changed();
-    } else if (oldlinear != prefs.tex_linear && ui_gl_begin((Widget)views[0].ui)) {
+    } else if ((oldlinear != prefs.tex_linear || oldmipmaps != prefs.tex_mipmaps)
+               && ui_gl_begin((Widget)views[0].ui)) {
         render_reset_textures();
     }
     ui_redraw_all();
@@ -1640,6 +1643,7 @@ static void build_prefs_dialog(void)
     pr.font = field_row(p, "View font (X font name):", 40);
     pr.invert = toggle(p, "Invert mouse look", 0);
     pr.linear = toggle(p, "Linear texture filtering", 0);
+    pr.mipmaps = toggle(p, "Texture mipmapping", 1);
     pr.names = toggle(p, "Show entity names in 2D views", 1);
     pr.links = toggle(p, "Show entity target links", 1);
     label(p, "Font changes take effect after a restart.");

@@ -43,12 +43,15 @@ static GLuint upload_rgba(const unsigned char *rgba, int w, int h)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, prefs.tex_linear ? GL_LINEAR : GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-                    prefs.tex_linear ? GL_LINEAR_MIPMAP_LINEAR : GL_NEAREST_MIPMAP_NEAREST);
+    if (prefs.tex_mipmaps)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
+                        prefs.tex_linear ? GL_LINEAR_MIPMAP_LINEAR : GL_NEAREST_MIPMAP_NEAREST);
+    else
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, prefs.tex_linear ? GL_LINEAR : GL_NEAREST);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, pw, ph, 0, GL_RGBA, GL_UNSIGNED_BYTE, buf);
 
     /* box filtered mipmaps */
-    while (pw > 1 || ph > 1) {
+    while (prefs.tex_mipmaps && (pw > 1 || ph > 1)) {
         int nw = pw > 1 ? pw / 2 : 1, nh = ph > 1 ? ph / 2 : 1;
         unsigned char *mip = xmalloc((size_t)nw * nh * 4);
         for (y = 0; y < nh; y++)
