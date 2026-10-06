@@ -26,7 +26,6 @@
 #include "view.h"
 
 #include <ctype.h>
-#include <locale.h>
 #include <stdarg.h>
 #include <sys/time.h>
 
@@ -1581,9 +1580,6 @@ int ui_main(int argc, char **argv)
         fprintf(stderr, "qotif: cannot open display\n");
         return 1;
     }
-    /* XtOpenDisplay ran setlocale(LC_ALL, ""); numbers in .map, .cfg and
-     * prefs.cfg must always use '.', even under locales such as pt_BR */
-    setlocale(LC_NUMERIC, "C");
     if (!choose_visual())
         return 1;
     glctx = glXCreateContext(dpy, glvis, NULL, True);

@@ -475,13 +475,8 @@ void prefs_load(void)
     str_copy(prefs.font, ini_get(ini, "view", "font", prefs.font), sizeof(prefs.font));
     for (i = 0; i < num_pref_colors; i++) {
         const char *v = ini_get(ini, "colors", pref_colors[i].key, NULL);
-        char buf[64];
         float r, g, b;
-        if (!v)
-            continue;
-        str_copy(buf, v, sizeof(buf));
-        str_replace_char(buf, ',', '.');    /* see ini_get_double */
-        if (sscanf(buf, "%f %f %f", &r, &g, &b) == 3)
+        if (v && sscanf(v, "%f %f %f", &r, &g, &b) == 3)
             set_color(pref_colors[i].rgb, r, g, b);
     }
     if (prefs.grid < 1)

@@ -125,14 +125,7 @@ int ini_get_int(const ini_t *ini, const char *section, const char *key, int def)
 double ini_get_double(const ini_t *ini, const char *section, const char *key, double def)
 {
     const char *v = ini_get(ini, section, key, NULL);
-    char buf[64];
-
-    if (!v || !*v)
-        return def;
-    /* accept "0,25": older versions wrote decimal commas under some locales */
-    str_copy(buf, v, sizeof(buf));
-    str_replace_char(buf, ',', '.');
-    return atof(buf);
+    return (v && *v) ? atof(v) : def;
 }
 
 int ini_get_bool(const ini_t *ini, const char *section, const char *key, int def)
