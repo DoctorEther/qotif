@@ -37,6 +37,7 @@ int str_iprefix(const char *s, const char *prefix);
 int str_icontains(const char *hay, const char *needle);
 char *str_trim(char *s);
 void str_lower(char *s);
+void str_replace_char(char *s, char from, char to);
 int str_split(char *s, char sep, char **out, int max);
 
 /* files and paths */

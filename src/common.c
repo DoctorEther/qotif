@@ -140,6 +140,13 @@ void str_lower(char *s)
         *s = (char)tolower((unsigned char)*s);
 }
 
+void str_replace_char(char *s, char from, char to)
+{
+    for (; *s; s++)
+        if (*s == from)
+            *s = to;
+}
+
 int str_split(char *s, char sep, char **out, int max)
 {
     int n = 0;
