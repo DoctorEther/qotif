@@ -158,6 +158,7 @@ void ini_set_double(ini_t *ini, const char *section, const char *key, double val
 {
     char buf[64];
     snprintf(buf, sizeof(buf), "%g", value);
+    fmt_dot_decimal(buf);
     ini_set(ini, section, key, buf);
 }
 

@@ -4,6 +4,7 @@
 #include "common.h"
 
 #include <ctype.h>
+#include <locale.h>
 #include <math.h>
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -371,6 +372,19 @@ void log_msg(int level, const char *fmt, ...)
         log_hook(level, buf);
 }
 
+/* printf uses the locale's decimal separator (',' in pt_BR...), but numbers
+ * written to files must always use '.' */
+void fmt_dot_decimal(char *s)
+{
+    const char *dp = localeconv()->decimal_point;
+
+    if (!dp || !dp[0] || dp[1] || dp[0] == '.')
+        return;
+    for (; *s; s++)
+        if (*s == dp[0])
+            *s = '.';
+}
+
 void fmt_num(char *buf, size_t size, double v)
 {
     double r = floor(v + 0.5);
@@ -381,6 +395,7 @@ void fmt_num(char *buf, size_t size, double v)
         return;
     }
     snprintf(buf, size, "%.6f", v);
+    fmt_dot_decimal(buf);
     n = strlen(buf);
     while (n > 0 && buf[n - 1] == '0')
         buf[--n] = 0;

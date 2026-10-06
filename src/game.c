@@ -525,6 +525,7 @@ void prefs_save(void)
         char buf[64];
         const float *c = pref_colors[i].rgb;
         snprintf(buf, sizeof(buf), "%.3f %.3f %.3f", c[0], c[1], c[2]);
+        fmt_dot_decimal(buf);
         ini_set(ini, "colors", pref_colors[i].key, buf);
     }
     prefs_path(path, sizeof(path));

@@ -77,5 +77,6 @@ void log_msg(int level, const char *fmt, ...) PRINTF_LIKE(2, 3);
 /* formats a coordinate the way map files expect it: integers without
  * decimals, other values with up to six decimals */
 void fmt_num(char *buf, size_t size, double v);
+void fmt_dot_decimal(char *s);
 
 #endif
